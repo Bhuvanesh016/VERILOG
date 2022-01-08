@@ -1,0 +1,62 @@
+//verilog mux code
+// Code your design here
+module mux_16(in,sel,y);
+  input [15:0]in;
+  input [3:0]sel;
+  output y;
+  
+  assign y = in[sel];
+endmodule
+          
+		  
+Test bench
+
+//verilog test bench
+// Code your testbench here
+// or browse Examples
+`timescale 1 ns/10 ps  // time-unit = 1 ns, precision = 10 ps
+
+module mux_tb;
+  reg [15:0]in ;
+  reg [3:0]sel;
+  wire y;
+
+    // duration for each bit = 20 * timescale = 20 * 1 ns  = 20ns
+    localparam period = 20;  
+
+  mux_16 UUT (.in(in), .sel(sel), .y(y)); //intantiating
+  
+  
+  initial // initial block executes only once
+    
+    begin   
+           // Dump waves
+      $dumpfile("dump_mux.vcd");
+      $dumpvars(1);
+      $display("v1.");   
+      in = 16'h3f0a; sel = 4'h0;
+      display;
+      #period; // wait for period 
+      
+      $display("v2.");
+      sel = 4'h1;
+      display;
+      #period; // wait for period 
+      
+      $display("v3.");
+      sel = 4'h2;
+      display;
+      #period; // wait for period 
+      
+      $display("v4.");
+      sel = 4'h8;
+      display;
+      #period; // wait for period 
+    end
+  
+  task display;
+          //monitoring
+    #4 $display("in:%0h, sel:%0h, y:%0h",
+     	in, sel, y);
+  endtask 
+endmodule    
